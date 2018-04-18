@@ -1,0 +1,4 @@
+package: github.com/eatigo/monday
+import:
+- package: gopkg.in/fatih/set.v0
+  version: ^0.1.0

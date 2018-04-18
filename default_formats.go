@@ -203,7 +203,7 @@ const (
 	DefaultFormatCsCZShort    = "02/01/2006"
 	DefaultFormatCsCZDateTime = "02/01/2006 15:04"
 
-	DefaultFormatThTHFull     = "วันจันทร์, 2. มกราคม 2006" // Czech (Czech Republic)
+	DefaultFormatThTHFull     = "วันจันทร์, 2. มกราคม 2006" // Thai (Thailand)
 	DefaultFormatThTHLong     = "2. มกราคม 2006"
 	DefaultFormatThTHMedium   = "02 ม.ค. 2006"
 	DefaultFormatThTHShort    = "02/01/2006"
