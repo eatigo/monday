@@ -3,12 +3,13 @@ package monday
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/fatih/set.v0"
 	"regexp"
 	"strconv"
 	"strings"
 	"text/scanner"
 	"time"
+
+	"gopkg.in/fatih/set.v0"
 )
 
 var (
@@ -121,7 +122,7 @@ func (this rangeIntSpan) scanInt(s *scanner.Scanner) (int, error) {
 		return i, nil
 	} else {
 		if debugLayoutDef {
-			fmt.Printf("invalid tok: %s '%s'\n", tok, s.TokenText())
+			fmt.Printf("invalid tok: %d '%s'\n", tok, s.TokenText())
 		}
 	}
 	return 0, NewInvalidTypeError()

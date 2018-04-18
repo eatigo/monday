@@ -1,6 +1,8 @@
 package monday
 
-import "strings"
+import (
+	"strings"
+)
 
 func findInString(where string, what string, foundIndex *int, trimRight *int) (found bool) {
 	ind := strings.Index(strings.ToLower(where), strings.ToLower(what))
@@ -19,9 +21,11 @@ func commonFormatFunc(value, format string,
 	knownDaysShort, knownDaysLong, knownMonthsShort, knownMonthsLong, knownPeriods map[string]string) (res string) {
 	l := stringToLayoutItems(value)
 	f := stringToLayoutItems(format)
+
 	if len(l) != len(f) {
 		return value // layouts does not matches
 	}
+
 	for i, v := range l {
 
 		var knw map[string]string

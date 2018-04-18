@@ -2,8 +2,9 @@ package monday
 
 import (
 	// "fmt"
-	"gopkg.in/fatih/set.v0"
 	"testing"
+
+	"gopkg.in/fatih/set.v0"
 )
 
 type layoutData struct {

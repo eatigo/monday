@@ -202,6 +202,12 @@ const (
 	DefaultFormatCsCZMedium   = "02 Jan 2006"
 	DefaultFormatCsCZShort    = "02/01/2006"
 	DefaultFormatCsCZDateTime = "02/01/2006 15:04"
+
+	DefaultFormatThTHFull     = "วันจันทร์, 2. มกราคม 2006" // Czech (Czech Republic)
+	DefaultFormatThTHLong     = "2. มกราคม 2006"
+	DefaultFormatThTHMedium   = "02 ม.ค. 2006"
+	DefaultFormatThTHShort    = "02/01/2006"
+	DefaultFormatThTHDateTime = "02/01/2006 15:04"
 )
 
 // 'Full' date formats for all supported locales
@@ -239,6 +245,7 @@ var FullFormatsByLocale = map[Locale]string{
 	LocaleJaJP: DefaultFormatJaJPFull,
 	LocaleElGR: DefaultFormatElGRFull,
 	LocaleCsCZ: DefaultFormatCsCZFull,
+	LocaleThTH: DefaultFormatThTHFull,
 }
 
 // 'Long' date formats for all supported locales
@@ -276,6 +283,7 @@ var LongFormatsByLocale = map[Locale]string{
 	LocaleJaJP: DefaultFormatJaJPLong,
 	LocaleElGR: DefaultFormatElGRLong,
 	LocaleCsCZ: DefaultFormatCsCZLong,
+	LocaleThTH: DefaultFormatThTHLong,
 }
 
 // 'Medium' date formats for all supported locales
@@ -313,6 +321,7 @@ var MediumFormatsByLocale = map[Locale]string{
 	LocaleJaJP: DefaultFormatJaJPMedium,
 	LocaleElGR: DefaultFormatElGRMedium,
 	LocaleCsCZ: DefaultFormatCsCZMedium,
+	LocaleThTH: DefaultFormatThTHMedium,
 }
 
 // 'Short' date formats for all supported locales
@@ -350,6 +359,7 @@ var ShortFormatsByLocale = map[Locale]string{
 	LocaleJaJP: DefaultFormatJaJPShort,
 	LocaleElGR: DefaultFormatElGRShort,
 	LocaleCsCZ: DefaultFormatCsCZShort,
+	LocaleThTH: DefaultFormatThTHShort,
 }
 
 // 'DateTime' date formats for all supported locales
@@ -387,4 +397,5 @@ var DateTimeFormatsByLocale = map[Locale]string{
 	LocaleJaJP: DefaultFormatJaJPDateTime,
 	LocaleElGR: DefaultFormatElGRDateTime,
 	LocaleCsCZ: DefaultFormatCsCZDateTime,
+	LocaleThTH: DefaultFormatThTHDateTime,
 }
