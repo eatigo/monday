@@ -1,6 +1,4 @@
-hash: 2c42b193ae6407c0e61309b08347681c5df84aa9fd15cd33bb7194449729efd8
-updated: 2018-04-18T16:00:32.551791071+08:00
-imports:
-- name: gopkg.in/fatih/set.v0
-  version: 168a5d71ba0669ae06888225478d73a113f1687e
+hash: df78086c04e11f32fcb606ade214c478d095dc090b2314ed101cefacf6b5dce6
+updated: 2018-08-03T18:17:20.437719+08:00
+imports: []
 testImports: []

@@ -1,10 +1,7 @@
 package monday
 
 import (
-	// "fmt"
 	"testing"
-
-	"gopkg.in/fatih/set.v0"
 )
 
 type layoutData struct {
@@ -114,13 +111,13 @@ func TestLayoutValidator(t *testing.T) {
 }
 
 // TODO: locale groups.
-var englishLocales *set.Set = set.New(LocaleEnUS, LocaleEnGB)
+var englishLocales = newSet(LocaleEnUS, LocaleEnGB)
 
 func compareLocales(a, b Locale) bool {
 	if a == b {
 		return true
 	}
-	if englishLocales.Has(string(a)) && englishLocales.Has(string(b)) {
+	if englishLocales.Has(a) && englishLocales.Has(b) {
 		return true
 	}
 	return false
