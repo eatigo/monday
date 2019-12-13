@@ -290,6 +290,15 @@ var formatTests = []FormatTest{
 	{LocaleZhHK, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006年 January 2日", "2013年 5 月 13日"},
 	{LocaleZhHK, time.Date(0, 5, 1, 0, 0, 0, 0, time.UTC), "January", "5 月"},
 
+	{LocaleKoKR, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006/01/2", "2013/05/13"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006/1/2 Monday", "2013/5/13 월요일"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 10, 30, 0, 0, time.UTC), "2006/1/2 Monday 3:04pm", "2013/5/13 월요일 10:30오전"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 23, 30, 0, 0, time.UTC), "2006/1/2 Monday 3:04PM", "2013/5/13 월요일 11:30오후"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006 Jan 2 Monday", "2013 5월 13 월요일"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006 Jan 2", "2013 5월 13"},
+	{LocaleKoKR, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006 January 2", "2013 5월 13"},
+	{LocaleKoKR, time.Date(0, 5, 1, 0, 0, 0, 0, time.UTC), "January", "5월"},
+
 	{LocaleJaJP, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006/01/2", "2013/05/13"},
 	{LocaleJaJP, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006/1/2 Monday", "2013/5/13 月曜日"},
 	{LocaleJaJP, time.Date(2013, 5, 13, 10, 30, 0, 0, time.UTC), "2006/1/2 Monday 3:04pm", "2013/5/13 月曜日 10:30午前"},
@@ -326,15 +335,14 @@ var formatTests = []FormatTest{
 	{LocaleCsCZ, time.Date(0, 5, 1, 0, 0, 0, 0, time.UTC), "January", "květen"},
 	{LocaleCsCZ, time.Date(0, 5, 13, 0, 0, 0, 0, time.UTC), "2 January", "13 květen"},
 
-	{LocaleThTH, time.Date(2013, 9, 3, 0, 0, 0, 0, time.UTC), "Mon Jan 2 2006", "อังคาร กย 3 2013"},
-	{LocaleThTH, time.Date(2013, 9, 4, 0, 0, 0, 0, time.UTC), "Monday Jan 2 2006", "วันพุธ กย 4 2013"},
-	{LocaleThTH, time.Date(2013, 10, 3, 0, 0, 0, 0, time.UTC), "Monday January 02 2006", "วันพฤหัสบดี ตุลาคม 03 2013"},
-	{LocaleThTH, time.Date(2013, 11, 3, 0, 0, 0, 0, time.UTC), "Monday. 2 January 2006", "วันอาทิตย์. 3 พฤศจิกายน 2013"},
-	{LocaleThTH, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006. 2 January. Monday", "2013. 13 พฤษภาคม. วันจันทร์"},
-	{LocaleThTH, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2 Jan 2006", "13 พค 2013"},
-	{LocaleThTH, time.Date(0, 5, 1, 0, 0, 0, 0, time.UTC), "January", "พฤษภาคม"},
-	{LocaleThTH, time.Date(0, 5, 13, 0, 0, 0, 0, time.UTC), "2 January", "13 พฤษภาคม"},
-
+	{LocaleSlSI, time.Date(2013, 9, 3, 0, 0, 0, 0, time.UTC), "Mon Jan 2 2006", "tor sep 3 2013"},
+	{LocaleSlSI, time.Date(2013, 9, 4, 0, 0, 0, 0, time.UTC), "Monday Jan 2 2006", "sreda sep 4 2013"},
+	{LocaleSlSI, time.Date(2013, 10, 3, 0, 0, 0, 0, time.UTC), "Monday January 02 2006", "četrtek oktober 03 2013"},
+	{LocaleSlSI, time.Date(2013, 11, 3, 0, 0, 0, 0, time.UTC), "Monday. 2 January 2006", "nedelja. 3 november 2013"},
+	{LocaleSlSI, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2006. 2 January. Monday", "2013. 13 maj. ponedeljek"},
+	{LocaleSlSI, time.Date(2013, 5, 13, 0, 0, 0, 0, time.UTC), "2 Jan 2006", "13 maj 2013"},
+	{LocaleSlSI, time.Date(0, 5, 1, 0, 0, 0, 0, time.UTC), "January", "maj"},
+	{LocaleSlSI, time.Date(0, 5, 13, 0, 0, 0, 0, time.UTC), "2 January", "13 maj"},
 }
 
 func TestFormat(t *testing.T) {
@@ -344,11 +352,6 @@ func TestFormat(t *testing.T) {
 		if txt != ts.expected {
 			t.Errorf("Test #%d (%s: %s) => Format failed.\n         Got: %s\n    Expected: %s\n", i, ts.locale, ts.layout, txt, ts.expected)
 			continue
-		}
-
-		// TODO fix reverse locale for TH, we don't need it right now
-		if ts.locale == LocaleThTH {
-			continue;
 		}
 
 		reverseDate, err := ParseInLocation(ts.layout, txt, time.UTC, ts.locale)
@@ -362,6 +365,19 @@ func TestFormat(t *testing.T) {
 			t.Errorf("Test #%d (%s: %s) => Reverse parse from '%s' failed.\n         Got: %s\n    Expected: %s\n",
 				i, ts.locale, ts.layout, txt, reverseDate.Format(time.RFC850), ts.date.Format(time.RFC850))
 			continue
+		}
+	}
+}
+
+func BenchmarkFormat(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		for _, ts := range formatTests {
+			txt := Format(ts.date, ts.layout, ts.locale)
+
+			if txt != ts.expected {
+				b.Errorf("failed")
+				continue
+			}
 		}
 	}
 }
@@ -381,8 +397,27 @@ func TestBadLocale(t *testing.T) {
 func TestGetShortDays(t *testing.T) {
 	locales := ListLocales()
 	for _, locale := range locales {
-		if days := GetShortDays(locale); days == nil {
+		days := GetShortDays(locale)
+		if days == nil || len(days) != 7 {
 			t.Error("Not expected result. ", days)
+		}
+
+		// according to https://www.timeanddate.com/calendar/days/monday.html
+		// only Canada, USA and Japan use Sunday as first day of the week
+		switch locale {
+		case LocaleEnUS:
+			if days[0] != shortDayNamesEnUS["Sun"] {
+				t.Error("first day of week in US should be Sunday", days)
+			}
+		case LocaleJaJP:
+			if days[0] != shortDayNamesJaJP["Sun"] {
+				t.Error("first day of week in JP should be Sunday", days)
+			}
+
+		default:
+			if days[0] != knownDaysShort[locale]["Mon"] {
+				t.Error("first day of week should be Monday", days, locale)
+			}
 		}
 	}
 }
@@ -390,8 +425,27 @@ func TestGetShortDays(t *testing.T) {
 func TestGetLongDays(t *testing.T) {
 	locales := ListLocales()
 	for _, locale := range locales {
-		if days := GetLongDays(locale); days == nil {
+		days := GetLongDays(locale)
+		if days == nil || len(days) != 7 {
 			t.Error("Not expected result. ", days)
+		}
+
+		// according to https://www.timeanddate.com/calendar/days/monday.html
+		// only Canada, USA and Japan use Sunday as first day of the week
+		switch locale {
+		case LocaleEnUS:
+			if days[0] != longDayNamesEnUS["Sunday"] {
+				t.Error("first day of week in US should be Sunday", days)
+			}
+		case LocaleJaJP:
+			if days[0] != longDayNamesJaJP["Sunday"] {
+				t.Error("first day of week in JP should be Sunday", days)
+			}
+
+		default:
+			if days[0] != knownDaysLong[locale]["Monday"] {
+				t.Error("first day of week should be Monday", days, locale)
+			}
 		}
 	}
 }
@@ -421,4 +475,11 @@ func ExampleParseInLocation() {
 
 	fmt.Println(ParseInLocation(layout, "12 April 2013 00:00:00 MST", time.UTC, LocaleEnUS))
 	fmt.Println(ParseInLocation(layout, "12 апреля 2013 00:00:00 MST", time.UTC, LocaleRuRU))
+}
+
+func ExampleParse() {
+	layout := "2 January 2006 15:04:05 MST"
+
+	fmt.Println(Parse(layout, "12 April 2013 00:00:00 MST", LocaleEnUS))
+	fmt.Println(Parse(layout, "12 апреля 2013 00:00:00 MST", LocaleRuRU))
 }

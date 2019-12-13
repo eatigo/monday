@@ -40,11 +40,12 @@ var internalFormatFuncs = map[Locale]internalFormatFunc{
 	LocaleZhCN: createCommonFormatFunc(LocaleZhCN),
 	LocaleZhTW: createCommonFormatFunc(LocaleZhTW),
 	LocaleZhHK: createCommonFormatFunc(LocaleZhHK),
+	LocaleKoKR: createCommonFormatFunc(LocaleKoKR),
 	LocaleJaJP: createCommonFormatFunc(LocaleJaJP),
 	LocaleElGR: createCommonFormatFuncWithGenitive(LocaleElGR),
 	LocaleIdID: createCommonFormatFunc(LocaleIdID),
 	LocaleCsCZ: createCommonFormatFunc(LocaleCsCZ),
-	LocaleThTH: createCommonFormatFunc(LocaleThTH),
+	LocaleSlSI: createCommonFormatFunc(LocaleSlSI),
 }
 
 // internalParseFunc is a preprocessor for default time.ParseInLocation func
@@ -82,11 +83,12 @@ var internalParseFuncs = map[Locale]internalParseFunc{
 	LocaleZhCN: parseFuncZhCommon(LocaleZhCN),
 	LocaleZhTW: parseFuncZhCommon(LocaleZhTW),
 	LocaleZhHK: parseFuncZhCommon(LocaleZhHK),
+	LocaleKoKR: parseFuncKoCommon(LocaleKoKR),
 	LocaleJaJP: parseFuncJaCommon(LocaleJaJP),
 	LocaleElGR: createCommonParsetFuncWithGenitive(LocaleElGR),
 	LocaleIdID: createCommonParseFunc(LocaleIdID),
 	LocaleCsCZ: createCommonParseFunc(LocaleCsCZ),
-	LocaleThTH: createCommonParseFunc(LocaleThTH),
+	LocaleSlSI: createCommonParseFunc(LocaleSlSI),
 }
 
 var knownDaysShort = map[Locale]map[string]string{}           // Mapping for 'Format', days of week, short form
@@ -95,7 +97,7 @@ var knownMonthsLong = map[Locale]map[string]string{}          // Mapping for 'Fo
 var knownMonthsShort = map[Locale]map[string]string{}         // Mapping for 'Format', months: short form
 var knownMonthsGenitiveShort = map[Locale]map[string]string{} // Mapping for 'Format', special for names in genitive, short form
 var knownMonthsGenitiveLong = map[Locale]map[string]string{}  // Mapping for 'Format', special for names in genitive, long form
-var knownPeriods = map[Locale]map[string]string{}
+var knownPeriods = map[Locale]map[string]string{}             // Mapping for 'Format', AM/PM
 
 // Reverse maps for the same
 
@@ -105,7 +107,7 @@ var knownMonthsLongReverse = map[Locale]map[string]string{}          // Mapping 
 var knownMonthsShortReverse = map[Locale]map[string]string{}         // Mapping for 'Format', months: short form
 var knownMonthsGenitiveShortReverse = map[Locale]map[string]string{} // Mapping for 'Format', special for names in genitive, short form
 var knownMonthsGenitiveLongReverse = map[Locale]map[string]string{}  // Mapping for 'Format', special for names in genitive, long form
-var knownPeriodsReverse = map[Locale]map[string]string{}
+var knownPeriodsReverse = map[Locale]map[string]string{}             // Mapping for 'Format', AM/PM
 
 func init() {
 	fillKnownWords()
@@ -303,6 +305,13 @@ func fillKnownWords() {
 	fillKnownMonthsLong(longMonthNamesZhHK, LocaleZhHK)
 	fillKnownMonthsShort(shortMonthNamesZhHK, LocaleZhHK)
 
+	// Ko_KR: Korean (Korea)
+	fillKnownDaysLong(longDayNamesKoKR, LocaleKoKR)
+	fillKnownDaysShort(shortDayNamesKoKR, LocaleKoKR)
+	fillKnownMonthsLong(longMonthNamesKoKR, LocaleKoKR)
+	fillKnownMonthsShort(shortMonthNamesKoKR, LocaleKoKR)
+	fillKnownPeriods(periodsKoKR, LocaleKoKR)
+
 	// Ja_JP: Japanese (Japan)
 	fillKnownDaysLong(longDayNamesJaJP, LocaleJaJP)
 	fillKnownDaysShort(shortDayNamesJaJP, LocaleJaJP)
@@ -331,18 +340,18 @@ func fillKnownWords() {
 	fillKnownMonthsLong(longMonthNamesCsCZ, LocaleCsCZ)
 	fillKnownMonthsShort(shortMonthNamesCsCZ, LocaleCsCZ)
 
-	// Th_TH: Thai (Thailand)
-	fillKnownDaysLong(longDayNamesThTH, LocaleThTH)
-	fillKnownDaysShort(shortDayNamesThTH, LocaleThTH)
-	fillKnownMonthsLong(longMonthNamesThTH, LocaleThTH)
-	fillKnownMonthsShort(shortMonthNamesThTH, LocaleThTH)
+	// Sl_SI: Slovenian (Slovenia)
+	fillKnownDaysLong(longDayNamesSlSI, LocaleSlSI)
+	fillKnownDaysShort(shortDayNamesSlSI, LocaleSlSI)
+	fillKnownMonthsLong(longMonthNamesSlSI, LocaleSlSI)
+	fillKnownMonthsShort(shortMonthNamesSlSI, LocaleSlSI)
 }
 
 func fill(src map[string]string, dest map[Locale]map[string]string, locale Locale) {
 	loc, ok := dest[locale]
 
 	if !ok {
-		loc = make(map[string]string)
+		loc = make(map[string]string, len(src))
 		dest[locale] = loc
 	}
 
@@ -355,7 +364,7 @@ func fillReverse(src map[string]string, dest map[Locale]map[string]string, local
 	loc, ok := dest[locale]
 
 	if !ok {
-		loc = make(map[string]string)
+		loc = make(map[string]string, len(src))
 		dest[locale] = loc
 	}
 
@@ -433,46 +442,112 @@ func ParseInLocation(layout, value string, loc *time.Location, locale Locale) (t
 	return time.ParseInLocation(layout, value, loc)
 }
 
-func GetShortDays(locale Locale) (arr []string) {
+// Parse is the standard time.Parse wrapper, which replaces
+// known month/day translations for a specified locale back to English before
+// calling time.Parse.
+func Parse(layout, value string, locale Locale) (time.Time, error) {
+	intFunc, ok := internalParseFuncs[locale]
+	if ok {
+		value = intFunc(layout, value)
+	} else {
+		return time.Now(), fmt.Errorf("unsupported locale: %v", locale)
+	}
+
+	return time.Parse(layout, value)
+}
+
+// GetShortDays retrieves the list of days for the given locale.
+// "Short" days are abbreviated versions of the full day names. In English,
+// for example, this might return "Tues" for "Tuesday". For certain locales,
+// the long and short form of the days of the week may be the same.
+//
+// If the locale cannot be found, the resulting slice will be nil.
+func GetShortDays(locale Locale) []string {
 	days, ok := knownDaysShort[locale]
 	if !ok {
-		return
+		return nil
 	}
-	for _, day := range days {
-		arr = append(arr, day)
+
+	var dayOrder []string
+
+	// according to https://www.timeanddate.com/calendar/days/monday.html
+	// only Canada, USA and Japan use Sunday as first day of the week
+	switch locale {
+	case LocaleEnUS, LocaleJaJP:
+		dayOrder = dayShortOrderSundayFirst
+	default:
+		dayOrder = dayShortOrderMondayFirst
 	}
-	return
+
+	ret := make([]string, 0, len(days))
+	for _, day := range dayOrder {
+		ret = append(ret, days[day])
+	}
+	return ret
 }
 
-func GetShortMonths(locale Locale) (arr []string) {
+// GetShortMonths retrieves the list of months for the given locale.
+// "Short" months are abbreviated versions of the full month names. In
+// English, for example, this might return "Jan" for "January". For
+// certain locales, the long and short form of the months may be the same.
+//
+// If the locale cannot be found, the resulting slice will be nil.
+func GetShortMonths(locale Locale) []string {
 	months, ok := knownMonthsShort[locale]
 	if !ok {
-		return
+		return nil
 	}
-	for _, month := range months {
-		arr = append(arr, month)
+
+	ret := make([]string, 0, len(months))
+	for _, m := range monthShortOrder {
+		ret = append(ret, months[m])
 	}
-	return
+	return ret
 }
 
-func GetLongDays(locale Locale) (arr []string) {
+// GetLongDays retrieves the list of days for the given locale. It will return
+// the full name of the days of the week.
+//
+// If the locale cannot be found, the resulting slice will be nil.
+func GetLongDays(locale Locale) []string {
 	days, ok := knownDaysLong[locale]
 	if !ok {
-		return
+		return nil
 	}
-	for _, day := range days {
-		arr = append(arr, day)
+
+	var dayOrder []string
+
+	// according to https://www.timeanddate.com/calendar/days/monday.html
+	// only Canada, USA and Japan use Sunday as first day of the week
+	switch locale {
+	case LocaleEnUS, LocaleJaJP:
+		dayOrder = dayLongOrderSundayFirst
+	default:
+		dayOrder = dayLongOrderMondayFirst
 	}
-	return
+
+	ret := make([]string, 0, len(days))
+	for _, day := range dayOrder {
+		ret = append(ret, days[day])
+	}
+	return ret
 }
 
-func GetLongMonths(locale Locale) (arr []string) {
+// GetLongMonths retrieves the list of months for the given locale. In
+// contrast to the "short" version of this function, this functions returns
+// the full name of the month.
+//
+// If the locale cannot be found, the resulting slice will be nil.
+func GetLongMonths(locale Locale) []string {
 	months, ok := knownMonthsLong[locale]
 	if !ok {
-		return
+		return nil
 	}
-	for _, month := range months {
-		arr = append(arr, month)
+
+	ret := make([]string, 0, len(months))
+	for _, m := range monthLongOrder {
+		ret = append(ret, months[m])
 	}
-	return
+
+	return ret
 }

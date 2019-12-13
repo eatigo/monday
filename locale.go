@@ -4,6 +4,8 @@ package monday
 // Monday uses ICU locale identifiers. See http://userguide.icu-project.org/locale
 type Locale string
 
+// Locale constants represent all locales that are currently supported by
+// this package.
 const (
 	LocaleEnUS = "en_US" // English (United States)
 	LocaleEnGB = "en_GB" // English (United Kingdom)
@@ -31,6 +33,7 @@ const (
 	LocaleZhCN = "zh_CN" // Chinese (Mainland)
 	LocaleZhTW = "zh_TW" // Chinese (Taiwan)
 	LocaleZhHK = "zh_HK" // Chinese (Hong Kong)
+	LocaleKoKR = "ko_KR" // Korean (Korea)
 	LocaleJaJP = "ja_JP" // Japanese (Japan)
 	LocaleElGR = "el_GR" // Greek (Greece)
 	LocaleIdID = "id_ID" // Indonesian (Indonesia)
@@ -40,7 +43,7 @@ const (
 	LocaleFrRE = "fr_RE" // French (Reunion)
 	LocaleFrGF = "fr_GF" // French (French Guiana)
 	LocaleCsCZ = "cs_CZ" // Czech (Czech Republic)
-	LocaleThTH = "th_TH" // Thai (Thailand)
+	LocaleSlSI = "sl_SI" // Slovenian (Slovenia)
 )
 
 // ListLocales returns all locales supported by the package.
@@ -72,6 +75,7 @@ func ListLocales() []Locale {
 		LocaleZhCN,
 		LocaleZhTW,
 		LocaleZhHK,
+		LocaleKoKR,
 		LocaleJaJP,
 		LocaleElGR,
 		LocaleFrGP,
@@ -80,6 +84,6 @@ func ListLocales() []Locale {
 		LocaleFrRE,
 		LocaleFrGF,
 		LocaleCsCZ,
-		LocaleThTH,
+		LocaleSlSI,
 	}
 }

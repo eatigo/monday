@@ -185,15 +185,21 @@ const (
 	DefaultFormatZhHKShort    = "2006/1/2"
 	DefaultFormatZhHKDateTime = "2006-01-02 15:04"
 
+	DefaultFormatKoKRFull     = "2006년1월2일 월요일" // Korean (Korea)
+	DefaultFormatKoKRLong     = "2006년1월2일"
+	DefaultFormatKoKRMedium   = "2006-01-02"
+	DefaultFormatKoKRShort    = "2006/1/2"
+	DefaultFormatKoKRDateTime = "2006-01-02 15:04"
+
 	DefaultFormatJaJPFull     = "2006年1月2日 Monday" // Japanese (Japan)
 	DefaultFormatJaJPLong     = "2006年1月2日"
 	DefaultFormatJaJPMedium   = "2006/01/02"
 	DefaultFormatJaJPShort    = "2006/1/2"
 	DefaultFormatJaJPDateTime = "2006/01/02 15:04"
 
-	DefaultFormatElGRFull     = "Δευτέρα, 2 Ιανουαρίου 2006" // Greek (Greece)
-	DefaultFormatElGRLong     = "2 Ιανουαρίου 2006"
-	DefaultFormatElGRMedium   = "2 Ιαν 2006"
+	DefaultFormatElGRFull     = "Monday, 2 January 2006" // Greek (Greece)
+	DefaultFormatElGRLong     = "2 January 2006"
+	DefaultFormatElGRMedium   = "2 Jan 2006"
 	DefaultFormatElGRShort    = "02/01/06"
 	DefaultFormatElGRDateTime = "02/01/06 15:04"
 
@@ -210,7 +216,8 @@ const (
 	DefaultFormatThTHDateTime = "02/01/2006 15:04"
 )
 
-// 'Full' date formats for all supported locales
+// FullFormatsByLocale maps locales to the'full' date formats for all
+// supported locales.
 var FullFormatsByLocale = map[Locale]string{
 	LocaleEnUS: DefaultFormatEnUSFull,
 	LocaleEnGB: DefaultFormatEnGBFull,
@@ -242,13 +249,15 @@ var FullFormatsByLocale = map[Locale]string{
 	LocaleZhCN: DefaultFormatZhCNFull,
 	LocaleZhTW: DefaultFormatZhTWFull,
 	LocaleZhHK: DefaultFormatZhHKFull,
+	LocaleKoKR: DefaultFormatKoKRFull,
 	LocaleJaJP: DefaultFormatJaJPFull,
 	LocaleElGR: DefaultFormatElGRFull,
 	LocaleCsCZ: DefaultFormatCsCZFull,
 	LocaleThTH: DefaultFormatThTHFull,
 }
 
-// 'Long' date formats for all supported locales
+// LongFormatsByLocale maps locales to the 'long' date formats for all
+// supported locales.
 var LongFormatsByLocale = map[Locale]string{
 	LocaleEnUS: DefaultFormatEnUSLong,
 	LocaleEnGB: DefaultFormatEnGBLong,
@@ -280,13 +289,15 @@ var LongFormatsByLocale = map[Locale]string{
 	LocaleZhCN: DefaultFormatZhCNLong,
 	LocaleZhTW: DefaultFormatZhTWLong,
 	LocaleZhHK: DefaultFormatZhHKLong,
+	LocaleKoKR: DefaultFormatKoKRLong,
 	LocaleJaJP: DefaultFormatJaJPLong,
 	LocaleElGR: DefaultFormatElGRLong,
 	LocaleCsCZ: DefaultFormatCsCZLong,
 	LocaleThTH: DefaultFormatThTHLong,
 }
 
-// 'Medium' date formats for all supported locales
+// MediumFormatsByLocale maps locales to the 'medium' date formats for all
+// supported locales.
 var MediumFormatsByLocale = map[Locale]string{
 	LocaleEnUS: DefaultFormatEnUSMedium,
 	LocaleEnGB: DefaultFormatEnGBMedium,
@@ -318,13 +329,15 @@ var MediumFormatsByLocale = map[Locale]string{
 	LocaleZhCN: DefaultFormatZhCNMedium,
 	LocaleZhTW: DefaultFormatZhTWMedium,
 	LocaleZhHK: DefaultFormatZhHKMedium,
+	LocaleKoKR: DefaultFormatKoKRMedium,
 	LocaleJaJP: DefaultFormatJaJPMedium,
 	LocaleElGR: DefaultFormatElGRMedium,
 	LocaleCsCZ: DefaultFormatCsCZMedium,
 	LocaleThTH: DefaultFormatThTHMedium,
 }
 
-// 'Short' date formats for all supported locales
+// ShortFormatsByLocale maps locales to the 'short' date formats for all
+// supported locales.
 var ShortFormatsByLocale = map[Locale]string{
 	LocaleEnUS: DefaultFormatEnUSShort,
 	LocaleEnGB: DefaultFormatEnGBShort,
@@ -356,13 +369,15 @@ var ShortFormatsByLocale = map[Locale]string{
 	LocaleZhCN: DefaultFormatZhCNShort,
 	LocaleZhTW: DefaultFormatZhTWShort,
 	LocaleZhHK: DefaultFormatZhHKShort,
+	LocaleKoKR: DefaultFormatKoKRShort,
 	LocaleJaJP: DefaultFormatJaJPShort,
 	LocaleElGR: DefaultFormatElGRShort,
 	LocaleCsCZ: DefaultFormatCsCZShort,
 	LocaleThTH: DefaultFormatThTHShort,
 }
 
-// 'DateTime' date formats for all supported locales
+// DateTimeFormatsByLocale maps locales to the 'DateTime' date formats for
+// all supported locales.
 var DateTimeFormatsByLocale = map[Locale]string{
 	LocaleEnUS: DefaultFormatEnUSDateTime,
 	LocaleEnGB: DefaultFormatEnGBDateTime,
@@ -394,6 +409,7 @@ var DateTimeFormatsByLocale = map[Locale]string{
 	LocaleZhCN: DefaultFormatZhCNDateTime,
 	LocaleZhTW: DefaultFormatZhTWDateTime,
 	LocaleZhHK: DefaultFormatZhHKDateTime,
+	LocaleKoKR: DefaultFormatKoKRDateTime,
 	LocaleJaJP: DefaultFormatJaJPDateTime,
 	LocaleElGR: DefaultFormatElGRDateTime,
 	LocaleCsCZ: DefaultFormatCsCZDateTime,
