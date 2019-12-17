@@ -44,6 +44,7 @@ const (
 	LocaleFrGF = "fr_GF" // French (French Guiana)
 	LocaleCsCZ = "cs_CZ" // Czech (Czech Republic)
 	LocaleSlSI = "sl_SI" // Slovenian (Slovenia)
+	LocaleThTH = "th_TH" // Thai (Thailand)
 )
 
 // ListLocales returns all locales supported by the package.
